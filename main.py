@@ -50,6 +50,12 @@ class App(object):
         return 0
 
 
+class Player(object):
+
+    def __init__(self):
+        pass
+
+
 def main() -> None:
     pygame.init()
     app: App = App()
