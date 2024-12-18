@@ -7,7 +7,7 @@ GAME_TITLE: str = "Cursor Hunters"
 
 class App(object):
     _version_major: int = 2
-    _version_minor: int = 0
+    _version_minor: int = 1
     _version_patch: int = 0
 
     def __init__(self,
@@ -16,6 +16,7 @@ class App(object):
         # Set caption before instantiating window to avoid seeing default window caption before changing it
         pygame.display.set_caption(window_title)
 
+        self._background_colour: tuple[int, int, int] = (255, 255, 255)
         self._clock: pygame.time.Clock = pygame.time.Clock()
         self._mouse_position: tuple[int, int] = (0, 0)
         self._running: bool = True
@@ -42,8 +43,7 @@ class App(object):
 
             self._mouse_position = pygame.mouse.get_pos()
 
-            self._window.fill((0, 0, 0))
-            pygame.draw.circle(self._window, (255, 0, 0), self._mouse_position, 6.9)
+            self._window.fill(self._background_colour)
 
             pygame.display.flip()
 
