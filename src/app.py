@@ -17,7 +17,7 @@ class App(object):
         self._background_colour: tuple[int, int, int] = (255, 255, 255)
         self._clock: pygame.time.Clock = pygame.time.Clock()
         self._delta_time: float = 0.0
-        self._framerate_limit: int = 0
+        self._framerate_limit: int = 120
         self._mouse_position: tuple[int, int] = (0, 0)
         self._player: Player = Player()
         self._running: bool = True
@@ -31,17 +31,19 @@ class App(object):
     def close(self) -> None:
         self._running = False
 
+    def _handle_events(self,
+                       events: list[pygame.event.Event]):
+        for event in events:
+
+            match event.type:
+
+                case pygame.QUIT:
+                    self.close()
+
     def mainloop(self) -> int:
 
         while self._running:
-
-            for event in pygame.event.get():
-
-                match event.type:
-
-                    case pygame.QUIT:
-                        self.close()
-
+            self._handle_events(pygame.event.get())
             self._mouse_position = pygame.mouse.get_pos()
             self._player.move_towards((float(self._mouse_position[0]), float(self._mouse_position[1])),
                                       self._delta_time)
