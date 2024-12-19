@@ -22,7 +22,6 @@ class App(object):
         self._player: Player = Player()
         self._running: bool = True
         self._window: pygame.Surface = pygame.display.set_mode(window_resolution)
-        print(f"Running {GAME_TITLE} version {App.get_version()}")
 
     @staticmethod
     def get_version() -> str:
@@ -36,7 +35,7 @@ class App(object):
         self._running = False
 
     def _handle_events(self,
-                       events: list[pygame.event.Event]):
+                       events: list[pygame.event.Event]) -> None:
 
         for event in events:
 
