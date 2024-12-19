@@ -1,4 +1,5 @@
 from constants import *
+from enemy import Enemy
 from player import Player
 import pygame
 
@@ -20,6 +21,7 @@ class App(object):
         self._framerate_limit: int = 120
         self._mouse_position: tuple[int, int] = (0, 0)
         self._player: Player = Player()
+        self._enemy: Enemy = Enemy()
         self._running: bool = True
         self._window: pygame.Surface = pygame.display.set_mode(window_resolution)
 
@@ -51,9 +53,11 @@ class App(object):
             self._mouse_position = pygame.mouse.get_pos()
             self._player.move_towards((float(self._mouse_position[0]), float(self._mouse_position[1])),
                                       self._delta_time)
+            self._enemy.move_towards(self._player.get_position(), self._delta_time)
 
             self._window.fill(self._background_colour)
             self._player.draw(self._window)
+            self._enemy.draw(self._window)
 
             pygame.display.flip()
             self._delta_time = self._clock.tick(self._framerate_limit) / MS_IN_SECOND

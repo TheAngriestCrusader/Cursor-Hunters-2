@@ -10,7 +10,6 @@ class Player(GameEntity):
         self._health: float = 100.0
         self._max_health: float = 100.0
         self._max_speed: float = 256.0
-        self._position: tuple[float, float] = (0, 0)
         self._radius: float = 16.0
 
     def draw(self,

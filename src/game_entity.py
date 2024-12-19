@@ -6,6 +6,10 @@ class GameEntity(object):
         self._max_speed: float = max_speed
         self._position: tuple[float, float] = position
 
+    def get_position(self) -> tuple[float, float]:
+
+        return self._position
+
     def move_towards(self,
                      target_position: tuple[float, float],
                      delta_time: float) -> None:
