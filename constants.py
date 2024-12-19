@@ -1,0 +1,1 @@
+GAME_TITLE: str = "Cursor Hunters"
