@@ -37,6 +37,7 @@ class App(object):
 
     def _handle_events(self,
                        events: list[pygame.event.Event]):
+
         for event in events:
 
             match event.type:
