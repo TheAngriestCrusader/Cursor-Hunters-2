@@ -9,7 +9,7 @@ class App(object):
     _version_patch: int = 0
 
     def __init__(self,
-                 window_resolution: tuple[float, float] = (640.0, 640.0),
+                 window_resolution: tuple[int, int] = (640, 640),
                  window_title: str = GAME_TITLE) -> None:
         # Set caption before instantiating window to avoid seeing default window caption before changing it
         pygame.display.set_caption(window_title)
@@ -43,7 +43,8 @@ class App(object):
                         self.close()
 
             self._mouse_position = pygame.mouse.get_pos()
-            self._player.move_towards(self._mouse_position, self._delta_time)
+            self._player.move_towards((float(self._mouse_position[0]), float(self._mouse_position[1])),
+                                      self._delta_time)
 
             self._window.fill(self._background_colour)
             self._player.draw(self._window)
