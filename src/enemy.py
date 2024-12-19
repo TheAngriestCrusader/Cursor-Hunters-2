@@ -7,8 +7,10 @@ import random
 class Enemy(GameEntity):
 
     def __init__(self,
-                 target: GameEntity | None = None):
-        super().__init__()
+                 target: GameEntity | None = None,
+                 *args,
+                 **kwargs):
+        super().__init__(*args, **kwargs)
         self._colour: tuple[int, int, int] = (random.randint(ENEMY_COLOUR_MIN_RED, ENEMY_COLOUR_MAX_RED), 0, 0)
         self._target: GameEntity | None = target
 

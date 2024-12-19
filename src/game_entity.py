@@ -6,9 +6,9 @@ import pygame
 class GameEntity(object):
 
     def __init__(self,
+                 position: tuple[float, float],
                  colour: tuple[int, int, int] = (255, 0 ,0),
                  max_speed: float = 128.0,
-                 position: tuple[float, float] = (0, 0),
                  radius: float = 16.0) -> None:
         self._colour: tuple[int, int, int] = colour
         self._max_speed: float = max_speed
