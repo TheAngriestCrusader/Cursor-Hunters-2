@@ -28,6 +28,10 @@ class App(object):
     def get_version() -> str:
         return f"{App._version_major}.{App._version_minor}.{App._version_patch}"
 
+    @staticmethod
+    def set_window_title(new_title: str) -> None:
+        pygame.display.set_caption(new_title)
+
     def close(self) -> None:
         self._running = False
 
