@@ -1,15 +1,32 @@
+from constants import *
 from game_entity import GameEntity
 import pygame
+import random
 
 
 class Enemy(GameEntity):
 
-    def __init__(self):
+    def __init__(self,
+                 target: GameEntity | None = None):
         super().__init__()
-        self._colour: tuple[int, int, int] = (200, 0, 0)
-        self._radius: float = 12.0
+        self._colour: tuple[int, int, int] = (random.randint(ENEMY_COLOUR_MIN_RED, ENEMY_COLOUR_MAX_RED), 0, 0)
+        self._target: GameEntity | None = target
 
-    def draw(self,
-             surface: pygame.Surface) -> None:
-        position: tuple[int, int] = (int(self._position[0]), int(self._position[1]))
-        pygame.draw.circle(surface, self._colour, position, self._radius)
+    def is_colliding_target(self) -> bool:
+
+        if self._target is None:
+
+            return False
+
+        return super().is_colliding(self._target)
+
+    def move_towards_target(self,
+                            delta_time: float) -> bool:
+
+        if self._target is None:
+
+            return False
+
+        super().move_towards(self._target.get_position(), delta_time)
+
+        return super().is_colliding(self._target)
