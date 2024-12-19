@@ -1,5 +1,4 @@
 from app import App
-from constants import *
 import pygame
 
 
