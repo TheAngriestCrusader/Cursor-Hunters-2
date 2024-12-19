@@ -2,12 +2,6 @@ from app import App
 import pygame
 
 
-class Player(object):
-
-    def __init__(self):
-        pass
-
-
 def main() -> None:
     pygame.init()
     app: App = App()

@@ -17,7 +17,7 @@ class App(object):
         self._background_colour: tuple[int, int, int] = (255, 255, 255)
         self._clock: pygame.time.Clock = pygame.time.Clock()
         self._delta_time: float = 0.0
-        self._framerate_limit: int = 60
+        self._framerate_limit: int = 0
         self._mouse_position: tuple[int, int] = (0, 0)
         self._player: Player = Player()
         self._running: bool = True
