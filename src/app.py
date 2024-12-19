@@ -6,7 +6,7 @@ import pygame
 
 class App(object):
     _version_major: int = 2
-    _version_minor: int = 2
+    _version_minor: int = 3
     _version_patch: int = 0
 
     def __init__(self,
