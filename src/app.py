@@ -20,11 +20,11 @@ class App(object):
         self.game_entity_manager: GameEntityManager = GameEntityManager()
         self.enemy_manager: EnemyManager = EnemyManager(self.game_entity_manager)
         self._mouse_position: tuple[int, int] = (0, 0)
-        self._player: Player = self.game_entity_manager.spawn_game_entity(Player, self.game_entity_manager, (0, 0))
+        self._player: Player = self.game_entity_manager.spawn_game_entity(Player, self.game_entity_manager, (640, 640))
         self._running: bool = True
         self._window: pygame.Surface = pygame.display.set_mode(WINDOW_SIZE)
 
-        for x in range(4):
+        for x in range(128):
             self.enemy_manager.spawn_enemy(self._player)
 
     @staticmethod

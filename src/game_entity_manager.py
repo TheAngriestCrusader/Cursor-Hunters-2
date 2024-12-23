@@ -52,7 +52,7 @@ class GameEntityManager(object):
 
             if game_entity.is_colliding(existing_entity):
 
-                raise ValueError("Spawned entity collides with an existing entity.")
+                print("Spawned entity collides with an existing entity.")
 
         self._game_entities.append(game_entity)
 

@@ -25,20 +25,6 @@ class Enemy(GameEntity):
         self._colour: tuple[int, int, int] = (random.randint(ENEMY_COLOUR_MIN_RED, ENEMY_COLOUR_MAX_RED), 0, 0)
         self._target: GameEntity | None = target
 
-    def is_colliding_target(self) -> bool:
-        """
-        Checks if the Enemy is colliding with its target.
-
-        Returns:
-            bool: True if colliding with the target, False otherwise.
-        """
-        if self._target is None:  # No target assigned, cannot collide
-
-            return False
-
-        # Use the base class's method to check collision with the target
-        return super().is_colliding(self._target)
-
     def move_towards_target(self,
                             delta_time: float) -> None:
         """

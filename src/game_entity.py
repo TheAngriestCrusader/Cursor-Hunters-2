@@ -70,15 +70,73 @@ class GameEntity(object):
                                                  self._position[1] + direction[1] * max_move_distance)
             self.set_position(new_position)
 
+    def resolve_collision(self,
+                          original_position: tuple[float, float],
+                          target_position: tuple[float, float],
+                          colliding_entities: list[GameEntity]) -> tuple[float, float]:
+        """
+        Resolves collisions with sliding, considering all colliding entities and
+        calculating a direction to move away from the overlapping ones.
+        """
+        # Initialize a final resolution vector
+        resolution_x, resolution_y = 0, 0
+
+        # Iterate over all colliding entities
+        for entity in colliding_entities:
+            colliding_position = entity.get_position()
+            delta_x = self._position[0] - colliding_position[0]
+            delta_y = self._position[1] - colliding_position[1]
+
+            # Calculate the overlap distance
+            distance = (delta_x ** 2 + delta_y ** 2) ** 0.5
+            overlap = max(0, self._radius + entity._radius - distance)  # Overlap resolution distance
+
+            if overlap > 0:  # If there is an overlap, calculate push-out vector
+                if distance > 0:  # Valid direction exists
+                    normal_x = delta_x / distance  # Normalize vector
+                    normal_y = delta_y / distance
+                else:  # If positions are exactly the same, arbitrarily choose a direction
+                    normal_x = 1.0
+                    normal_y = 0.0
+
+                # Push out of collision along the normal vector
+                resolution_x += normal_x * overlap
+                resolution_y += normal_y * overlap
+
+        # Apply the calculated resolution to the entity's position
+        adjusted_position = (
+            self._position[0] + resolution_x,
+            self._position[1] + resolution_y,
+        )
+
+        # Add a small buffer (epsilon) to ensure entities fully resolve and prevent re-collision
+        epsilon = 0.01  # Tune buffer size if needed
+        adjusted_position = (
+            adjusted_position[0] + resolution_x * epsilon,
+            adjusted_position[1] + resolution_y * epsilon,
+        )
+
+        # Test if the adjusted position resolves all collisions
+        self._position = adjusted_position
+        if not self._game_entity_manager.test_collision(self):  # All collisions resolved
+            return adjusted_position
+
+        # If still colliding after adjustments, fallback to original position (rare case)
+        self._position = original_position
+        return original_position
+
     def set_position(self,
-                     new_position: tuple[float, float]) -> None:
+                     new_position: tuple[float, float],
+                     ignore_collision: bool = False) -> None:
+        original_position: tuple[float, float] = self._position
+        self._position = new_position
         colliding_game_entities: list[GameEntity] = self._game_entity_manager.test_collision(self)
 
-        if not len(colliding_game_entities):
+        # If no collision or collisions are ignored, set position
+        if not len(colliding_game_entities) or ignore_collision:
             self._position = new_position
+            return
 
-        else:
-            print(f"Collision detected with the following entities:")
-
-            for game_entity in colliding_game_entities:
-                print(type(game_entity))
+        # More complicated collision resolution: sliding off entities
+        print(f"Collision detected with {len(colliding_game_entities)} entities.")
+        self._position = self.resolve_collision(original_position, new_position, colliding_game_entities)
