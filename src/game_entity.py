@@ -1,16 +1,25 @@
 from __future__ import annotations
-
+from typing import TYPE_CHECKING
 import pygame
+
+if TYPE_CHECKING:
+    from src.game_entity_manager import GameEntityManager
 
 
 class GameEntity(object):
+    """
+    Represents a game entity with a position, radius, speed, and color.
+    Provides functionality for movement, collision detection, and drawing.
+    """
 
     def __init__(self,
+                 game_entity_manager: GameEntityManager,
                  position: tuple[float, float],
-                 colour: tuple[int, int, int] = (255, 0 ,0),
+                 colour: tuple[int, int, int] = (255, 0, 0),
                  max_speed: float = 128.0,
                  radius: float = 16.0) -> None:
         self._colour: tuple[int, int, int] = colour
+        self._game_entity_manager: GameEntityManager = game_entity_manager
         self._max_speed: float = max_speed
         self._position: tuple[float, float] = position
         self._radius: float = radius
@@ -41,9 +50,8 @@ class GameEntity(object):
         delta_y: float = self._position[1] - target_position[1]
         distance_squared: float = delta_x ** 2 + delta_y ** 2
         combined_radius: float = self._radius + target_radius
-        colliding: bool = distance_squared <= combined_radius ** 2
 
-        return colliding
+        return distance_squared <= combined_radius ** 2
 
     def move_towards(self,
                      target_position: tuple[float, float],
@@ -54,7 +62,7 @@ class GameEntity(object):
         max_move_distance: float = self._max_speed * delta_time
 
         if distance <= max_move_distance:
-            self._position = target_position
+            self.set_position(target_position)
 
         else:
             direction: tuple[float, float] = (delta_x / distance, delta_y / distance)
@@ -64,4 +72,13 @@ class GameEntity(object):
 
     def set_position(self,
                      new_position: tuple[float, float]) -> None:
-        self._position = new_position
+        colliding_game_entities: list[GameEntity] = self._game_entity_manager.test_collision(self)
+
+        if not len(colliding_game_entities):
+            self._position = new_position
+
+        else:
+            print(f"Collision detected with the following entities:")
+
+            for game_entity in colliding_game_entities:
+                print(type(game_entity))

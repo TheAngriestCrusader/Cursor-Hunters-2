@@ -1,12 +1,22 @@
-from game_entity import GameEntity
-import pygame
+from src.game_entity import GameEntity
 
 
 class Player(GameEntity):
+    """
+    Represents the player entity in the game, inheriting from GameEntity.
+    """
 
     def __init__(self,
-                 position: tuple[float, float]) -> None:
-        super().__init__(position)
+                 *args,
+                 **kwargs) -> None:
+        """
+        Initializes the player with default attributes such as health, speed, and radius,
+        and sets the player's initial position.
+
+        Args:
+            position (tuple[float, float]): Coordinates for the player's initial position.
+        """
+        super().__init__(*args, **kwargs)
         self._health: float = 100.0
         self._max_health: float = 100.0
         self._max_speed: float = 256.0

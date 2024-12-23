@@ -1,7 +1,7 @@
-from constants import *
-from enemy_manager import EnemyManager
-from game_entity_manager import GameEntityManager
-from player import Player
+from src.constants import *
+from src.enemy_manager import EnemyManager
+from src.game_entity_manager import GameEntityManager
+from src.player import Player
 import pygame
 
 
@@ -12,9 +12,7 @@ class App(object):
 
     def __init__(self,
                  window_title: str = GAME_TITLE) -> None:
-        # Set caption before instantiating window to avoid seeing default window caption before changing it
         pygame.display.set_caption(window_title)
-
         self._background_colour: tuple[int, int, int] = (255, 255, 255)
         self._clock: pygame.time.Clock = pygame.time.Clock()
         self._delta_time: float = 0.0
@@ -22,15 +20,16 @@ class App(object):
         self.game_entity_manager: GameEntityManager = GameEntityManager()
         self.enemy_manager: EnemyManager = EnemyManager(self.game_entity_manager)
         self._mouse_position: tuple[int, int] = (0, 0)
-        self._player: Player = self.game_entity_manager.spawn_game_entity(Player, (0, 0))
+        self._player: Player = self.game_entity_manager.spawn_game_entity(Player, self.game_entity_manager, (0, 0))
         self._running: bool = True
         self._window: pygame.Surface = pygame.display.set_mode(WINDOW_SIZE)
 
-        for x in range(16):
+        for x in range(4):
             self.enemy_manager.spawn_enemy(self._player)
 
     @staticmethod
     def get_version() -> str:
+
         return f"{App._version_major}.{App._version_minor}.{App._version_patch}"
 
     @staticmethod
@@ -58,10 +57,8 @@ class App(object):
             self._player.move_towards((float(self._mouse_position[0]), float(self._mouse_position[1])),
                                       self._delta_time)
             self.enemy_manager.move_enemies(self._delta_time)
-
             self._window.fill(self._background_colour)
             self.game_entity_manager.draw_game_entities(self._window)
-
             pygame.display.flip()
             self._delta_time = self._clock.tick(self._framerate_limit) / MS_IN_SECOND
 
